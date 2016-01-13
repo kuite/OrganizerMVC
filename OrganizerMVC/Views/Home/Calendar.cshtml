@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Calendar";
+}
+
+<h2>Calendar</h2>
+
+Name:<br>
+<input id="name" name="name" form="form">
+<br>
+<form>
+    Description:<br>
+</form>
+<textarea rows="4" cols="50" name="note" id="note" form="form"></textarea>
+<br>
+    Date: <br>
+<input type="date" id="day" name="day" form="form">
+<input type="submit" id="create" value="Submit" form="form">
+
+<br>
+<br>
+<br>
+
+<table style="width: 50%">
+    <tr>
+        <th colspan="1">Id</th>
+        <th colspan="4">Name</th>
+        <th colspan="10">Description</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td colspan="1">@item.ActivityId</td>
+            <td colspan="4">@item.Name</td>
+            <td colspan="10">@item.Description</td>
+        </tr>
+    }
+</table>
