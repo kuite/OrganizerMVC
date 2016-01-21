@@ -20,7 +20,7 @@ namespace OrganizerMVC.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("SchedulerMvc", throwIfV1Schema: false)
         {
         }
 
@@ -28,5 +28,7 @@ namespace OrganizerMVC.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<OrganizerMVC.Models.Account> Accounts { get; set; }
     }
 }

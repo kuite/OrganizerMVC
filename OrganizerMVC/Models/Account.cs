@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SchedulerMVC.Models
+namespace OrganizerMVC.Models
 {
     public class Account
     {

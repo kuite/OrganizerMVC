@@ -18,7 +18,7 @@ namespace OrganizerMVC.Controllers
 
             //todo: get activites only which belongs for current user
 
-            return View(context.Activities);
+            return View();
         }
 
         public ActionResult About()
@@ -26,14 +26,6 @@ namespace OrganizerMVC.Controllers
             ViewBag.Message = "Your application description page.";
 
             return View();
-        }
-
-        [HttpGet]
-        [Route("home/calendar")]
-        public ActionResult Calendar()
-        {
-            //todo: return calendar view with data from db for current user
-            return null;
         }
     }
 }

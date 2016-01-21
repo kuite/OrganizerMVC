@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using SchedulerMVC.Models;
+using OrganizerMVC.Models;
 
 namespace OrganizerMVC.DataAccess
 {
