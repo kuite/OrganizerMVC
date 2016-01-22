@@ -1,9 +1,10 @@
 ﻿using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using OrganizerMVC.Models;
 
 namespace OrganizerMVC.DataAccess
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext
     {
         public DbSet<Account> Accounts { get; set; }
 
