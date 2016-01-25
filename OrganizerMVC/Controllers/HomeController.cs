@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OrganizerMVC.DataAccess;
+using OrganizerMVC.Models;
 
 namespace OrganizerMVC.Controllers
 {
@@ -11,7 +12,7 @@ namespace OrganizerMVC.Controllers
     {
         public ActionResult Index()
         {
-            var context = new DataContext();
+            var context = new ApplicationDbContext();
 
             if (!context.Database.Exists())
                 context.Database.Initialize(true);

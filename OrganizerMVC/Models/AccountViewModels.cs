@@ -2,6 +2,14 @@
 
 namespace OrganizerMVC.Models
 {
+    public class ExternalLoginConfirmationViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+    }
+
     public class ExternalLoginListViewModel
     {
         public string Action { get; set; }

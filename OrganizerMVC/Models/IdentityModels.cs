@@ -28,7 +28,5 @@ namespace OrganizerMVC.Models
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<Account> Accounts { get; set; }
     }
 }

@@ -77,10 +77,10 @@ namespace OrganizerMVC.DataAccess
             };
             var accounts = new List<Account> { ac1, ac2 };
 
-            context.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityRole
-            {
-                Name = "User"
-            });
+//            context.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+//            {
+//                Name = "User"
+//            });
 
             accounts.ForEach(a => context.Accounts.Add(a));
             acctivities.ForEach(a => context.Activities.Add(a));
