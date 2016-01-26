@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using OrganizerMVC.Models;
 
 namespace OrganizerMVC.DataAccess
 {
-    public class DataInitializer : DropCreateDatabaseIfModelChanges<DataContext>
+    //public class DataInitializer : DropCreateDatabaseIfModelChanges<DataContext>
+    public class DataInitializer : DropCreateDatabaseAlways<DataContext>
     {
         protected override void Seed(DataContext context)
         {
@@ -58,33 +62,28 @@ namespace OrganizerMVC.DataAccess
                 Day = 55,
                 Time = DateTime.Now.ToString("HH:mm"),
             };
-            var acctivities = new List<Activity> {actv1, actv2, actv3, actv4, actv5};
+            var acctivities = new List<Activity> {actv3, actv4, actv5};
 
-            var ac1 = new Account
+            if (!context.Users.Any(u => u.UserName == "tester@wp.pl"))
             {
-                Login = "admin",
-                Password = "admin",
-                Email = "ziomek@o2.pl",
-                Activities = new List<Activity> { actv1, actv2 }
-            };
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new ApplicationUserManager(userStore);
 
-            var ac2 = new Account
-            {
-                Login = "asdwrjh",
-                Password = "polska922",
-                Email = "asdasdw@o2.pl",
-                Activities = new List<Activity>()
-            };
-            var accounts = new List<Account> { ac1, ac2 };
+                var userToInsert = new ApplicationUser
+                {
+                    UserName = "tester@wp.pl", 
+                    PhoneNumber = "0797697898",
+                    Activities = new List<Activity> { actv1, actv2 }
+                };
+                userManager.Create(userToInsert, "tester");
 
-//            context.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityRole
-//            {
-//                Name = "User"
-//            });
-
-            accounts.ForEach(a => context.Accounts.Add(a));
+                actv1.ApplicationUser = userToInsert;
+                actv2.ApplicationUser = userToInsert;
+            }
             acctivities.ForEach(a => context.Activities.Add(a));
             context.SaveChanges();
+
+            base.Seed(context);
         }
     }
 }

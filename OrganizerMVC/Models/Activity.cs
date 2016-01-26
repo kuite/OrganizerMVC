@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace OrganizerMVC.Models
 {
     public class Activity
@@ -18,6 +17,6 @@ namespace OrganizerMVC.Models
 
         public int Year { get; set; }
 
-        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

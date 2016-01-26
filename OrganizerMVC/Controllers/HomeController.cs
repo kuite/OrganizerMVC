@@ -12,7 +12,7 @@ namespace OrganizerMVC.Controllers
     {
         public ActionResult Index()
         {
-            var context = new ApplicationDbContext();
+            var context = new DataContext();
 
             if (!context.Database.Exists())
                 context.Database.Initialize(true);
