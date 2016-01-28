@@ -13,11 +13,7 @@ namespace OrganizerMVC.Controllers
         public ActionResult Index()
         {
             var context = new DataContext();
-
-            if (!context.Database.Exists())
-                context.Database.Initialize(true);
-
-            //todo 1: if db not exist create it
+            context.Database.Initialize(true);
 
             return View();
         }

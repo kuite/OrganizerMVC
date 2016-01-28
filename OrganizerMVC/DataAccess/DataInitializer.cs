@@ -8,7 +8,6 @@ using OrganizerMVC.Models;
 
 namespace OrganizerMVC.DataAccess
 {
-    //public class DataInitializer : DropCreateDatabaseIfModelChanges<DataContext>
     public class DataInitializer : DropCreateDatabaseAlways<DataContext>
     {
         protected override void Seed(DataContext context)
@@ -63,6 +62,24 @@ namespace OrganizerMVC.DataAccess
                 Time = DateTime.Now.ToString("HH:mm"),
             };
             var acctivities = new List<Activity> {actv3, actv4, actv5};
+
+            if (!context.Users.Any(u => u.UserName == "tester@wp.pl"))
+            {
+                var userStore = new UserStore<AppUser>(context);
+                var userManager = new UserManager<AppUser>(userStore);
+
+                var userToInsert = new AppUser
+                {
+                    UserName = "tester@wp.pl",
+                    PhoneNumber = "0797697898",
+                    Activities = new List<Activity> { actv1, actv2 }
+                };
+                userManager.Create(userToInsert, "tester");
+
+                actv1.AppUser = userToInsert;
+                actv2.AppUser = userToInsert;
+            }
+
 
             //todo 0: create user with activities tester@wp.pl/tester
 
