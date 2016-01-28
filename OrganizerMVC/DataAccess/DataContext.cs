@@ -4,13 +4,11 @@ using OrganizerMVC.Models;
 
 namespace OrganizerMVC.DataAccess
 {
-    public class DataContext : IdentityDbContext<ApplicationUser>
+    public class DataContext : IdentityDbContext<AppUser>
     {
         public DbSet<Activity> Activities { get; set; }
 
-
-
-        public DataContext() : base("SchedulerMvc", throwIfV1Schema: false)
+        public DataContext() : base("SchedulerMvc")
         {
             Database.SetInitializer(new DataInitializer());
         }

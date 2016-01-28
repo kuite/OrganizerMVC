@@ -17,7 +17,7 @@ namespace OrganizerMVC.Controllers
             if (!context.Database.Exists())
                 context.Database.Initialize(true);
 
-            //todo: get activites only which belongs for current user
+            //todo 1: if db not exist create it
 
             return View();
         }

@@ -64,22 +64,8 @@ namespace OrganizerMVC.DataAccess
             };
             var acctivities = new List<Activity> {actv3, actv4, actv5};
 
-            if (!context.Users.Any(u => u.UserName == "tester@wp.pl"))
-            {
-                var userStore = new UserStore<ApplicationUser>(context);
-                var userManager = new ApplicationUserManager(userStore);
+            //todo 0: create user with activities tester@wp.pl/tester
 
-                var userToInsert = new ApplicationUser
-                {
-                    UserName = "tester@wp.pl", 
-                    PhoneNumber = "0797697898",
-                    Activities = new List<Activity> { actv1, actv2 }
-                };
-                userManager.Create(userToInsert, "tester");
-
-                actv1.ApplicationUser = userToInsert;
-                actv2.ApplicationUser = userToInsert;
-            }
             acctivities.ForEach(a => context.Activities.Add(a));
             context.SaveChanges();
 

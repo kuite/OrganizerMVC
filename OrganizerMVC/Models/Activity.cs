@@ -17,6 +17,6 @@ namespace OrganizerMVC.Models
 
         public int Year { get; set; }
 
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual AppUser AppUser { get; set; }
     }
 }
