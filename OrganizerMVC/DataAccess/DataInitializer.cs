@@ -65,8 +65,8 @@ namespace OrganizerMVC.DataAccess
 
             if (!context.Users.Any(u => u.UserName == "tester@wp.pl"))
             {
-                var userStore = new UserStore<AppUser>(context);
-                var userManager = new UserManager<AppUser>(userStore);
+                var userStore = new AppUserStore(context);
+                var userManager = new AppUserManager(userStore);
 
                 var userToInsert = new AppUser
                 {

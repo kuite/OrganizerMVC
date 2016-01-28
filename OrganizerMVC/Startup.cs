@@ -12,7 +12,7 @@ namespace OrganizerMVC
 {
     public partial class Startup
     {
-        public static Func<UserManager<AppUser>> UserManagerFactory { get; private set; }
+        public static Func<UserManager<User>> UserManagerFactory { get; private set; }
 
         public void Configuration(IAppBuilder app)
         {
@@ -25,14 +25,14 @@ namespace OrganizerMVC
 
             UserManagerFactory = () =>
             {
-                var usermanager = new UserManager<AppUser>(new UserStore<AppUser>(new DataContext()));
+                var usermanager = new UserManager<User>(new UserStore<User>(new DataContext()));
                 // allow alphanumeric characters in username
-                usermanager.UserValidator = new UserValidator<AppUser>(usermanager)
+                usermanager.UserValidator = new UserValidator<User>(usermanager)
                 {
                     AllowOnlyAlphanumericUserNames = true,
                 };
 
-                usermanager.ClaimsIdentityFactory = new AppUserClaimsIdentityFactory();
+                usermanager.ClaimsIdentityFactory = new UserClaimsIdentityFactory();
 
                 return usermanager;
             };

@@ -1,26 +1,40 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using OrganizerMVC.DataAccess;
 using OrganizerMVC.Models;
 
 namespace OrganizerMVC.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        private readonly UserManager<AppUser> _userManager;
+        //private readonly UserManager<User> _userManager;
 
-        public AccountController() : this (Startup.UserManagerFactory.Invoke())
+        private readonly AppUserManager _userManager;
+
+        public AccountController()
+            : this(new AppUserManager(new AppUserStore(new DataContext())))
         {
-
         }
 
-        public AccountController(UserManager<AppUser> userManager)
+        public AccountController(AppUserManager userManager)
         {
             this._userManager = userManager;
         }
+
+//        public AccountController() : this (Startup.UserManagerFactory.Invoke())
+//        {
+//
+//        }
+//
+//        public AccountController(UserManager<User> userManager)
+//        {
+//            this._userManager = userManager;
+//        }
 
         //
         // GET: /Account/Login
@@ -47,7 +61,8 @@ namespace OrganizerMVC.Controllers
 
             if (user != null)
             {
-                await SignIn(user);
+                //await SignIn(user);
+                await SignInAsync(user, model.RememberMe);
                 return Redirect(GetRedirectUrl("calendar/index"));
             }
 
@@ -86,7 +101,8 @@ namespace OrganizerMVC.Controllers
 
             if (result.Succeeded)
             {
-                await SignIn(user);
+               // await SignIn(user);
+                await SignInAsync(user, false);
                 return RedirectToAction("index", "home");
             }
 
@@ -107,12 +123,23 @@ namespace OrganizerMVC.Controllers
 
         #region Helpers
 
-        private async Task SignIn(AppUser user)
-        {
-            var identity = await _userManager.CreateIdentityAsync(
-                user, DefaultAuthenticationTypes.ApplicationCookie);
+//        private async Task SignIn(User user)
+//        {
+//            var identity = await _userManager.CreateIdentityAsync(
+//                user, DefaultAuthenticationTypes.ApplicationCookie);
+//
+//            GetAuthenticationManager().SignIn(identity);
+//        }
 
-            GetAuthenticationManager().SignIn(identity);
+        private async Task SignInAsync(AppUser user, bool isPersistent)
+        {
+            GetAuthenticationManager().SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            ClaimsIdentity identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+            // Extend identity claims
+            identity.AddClaim(new Claim(ClaimTypes.Sid, user.Id.ToString()));
+
+            GetAuthenticationManager().SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
         private IAuthenticationManager GetAuthenticationManager()
