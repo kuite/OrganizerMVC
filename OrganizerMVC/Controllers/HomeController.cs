@@ -8,12 +8,15 @@ using OrganizerMVC.Models;
 
 namespace OrganizerMVC.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
             var context = new DataContext();
-            context.Database.Initialize(true);
+            if (!context.Database.Exists())
+            {
+                context.Database.Initialize(true);
+            }
 
             return View();
         }

@@ -8,7 +8,7 @@ using OrganizerMVC.Models;
 
 namespace OrganizerMVC.DataAccess
 {
-    public class DataInitializer : DropCreateDatabaseAlways<DataContext>
+    public class DataInitializer : DropCreateDatabaseIfModelChanges<DataContext>
     {
         protected override void Seed(DataContext context)
         {
@@ -71,6 +71,7 @@ namespace OrganizerMVC.DataAccess
                 var userToInsert = new AppUser
                 {
                     UserName = "tester@wp.pl",
+                    Email = "tester@wp.pl",
                     PhoneNumber = "0797697898",
                     Activities = new List<Activity> { actv1, actv2 }
                 };

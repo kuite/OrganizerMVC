@@ -12,8 +12,6 @@ namespace OrganizerMVC.Controllers
     [Authorize]
     public class AccountController : BaseController
     {
-        //private readonly UserManager<User> _userManager;
-
         private readonly AppUserManager _userManager;
 
         public AccountController()
@@ -23,18 +21,8 @@ namespace OrganizerMVC.Controllers
 
         public AccountController(AppUserManager userManager)
         {
-            this._userManager = userManager;
+            _userManager = userManager;
         }
-
-//        public AccountController() : this (Startup.UserManagerFactory.Invoke())
-//        {
-//
-//        }
-//
-//        public AccountController(UserManager<User> userManager)
-//        {
-//            this._userManager = userManager;
-//        }
 
         //
         // GET: /Account/Login
@@ -61,8 +49,8 @@ namespace OrganizerMVC.Controllers
 
             if (user != null)
             {
-                //await SignIn(user);
                 await SignInAsync(user, model.RememberMe);
+                //var id = CurrentUser.UserId;
                 return Redirect(GetRedirectUrl("calendar/index"));
             }
 
@@ -101,7 +89,6 @@ namespace OrganizerMVC.Controllers
 
             if (result.Succeeded)
             {
-               // await SignIn(user);
                 await SignInAsync(user, false);
                 return RedirectToAction("index", "home");
             }
@@ -123,14 +110,6 @@ namespace OrganizerMVC.Controllers
 
         #region Helpers
 
-//        private async Task SignIn(User user)
-//        {
-//            var identity = await _userManager.CreateIdentityAsync(
-//                user, DefaultAuthenticationTypes.ApplicationCookie);
-//
-//            GetAuthenticationManager().SignIn(identity);
-//        }
-
         private async Task SignInAsync(AppUser user, bool isPersistent)
         {
             GetAuthenticationManager().SignOut(DefaultAuthenticationTypes.ExternalCookie);
@@ -139,7 +118,7 @@ namespace OrganizerMVC.Controllers
             // Extend identity claims
             identity.AddClaim(new Claim(ClaimTypes.Sid, user.Id.ToString()));
 
-            GetAuthenticationManager().SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+            GetAuthenticationManager().SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, identity);
         }
 
         private IAuthenticationManager GetAuthenticationManager()

@@ -172,7 +172,6 @@
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\AppClaimsPrincipal.cs" />
     <Compile Include="Models\AppUser.cs" />
-    <Compile Include="Models\AppUserClaimsIdentityFactory.cs" />
     <Compile Include="Models\AppUserPrincipal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

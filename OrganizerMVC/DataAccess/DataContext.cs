@@ -4,7 +4,6 @@ using OrganizerMVC.Models;
 
 namespace OrganizerMVC.DataAccess
 {
-    //public class DataContext : IdentityDbContext<User>
     public class DataContext : IdentityDbContext<AppUser, AppRole, int, AppUserLogin, AppUserRole, AppUserClaim>
     {
         public DbSet<Activity> Activities { get; set; }

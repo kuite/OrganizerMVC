@@ -33,7 +33,7 @@
                 @if (Context.User.Identity.IsAuthenticated)
                 {
                     <li>@Html.ActionLink("Calendar", "Index", "Calendar")</li>
-                    <li>@Html.ActionLink("Log out", "LogOff", "Account")</li>
+                    <li>@Html.ActionLink("Log out", "LogOut", "Account")</li>
                 }
             </ul>
         </div><!-- /.navbar-collapse -->
