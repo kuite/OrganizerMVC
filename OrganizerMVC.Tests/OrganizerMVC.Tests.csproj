@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountTests.cs" />
+    <Compile Include="Controllers\CalendarTests.cs" />
     <Compile Include="Controllers\HomeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

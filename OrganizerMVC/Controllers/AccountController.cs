@@ -12,7 +12,7 @@ namespace OrganizerMVC.Controllers
     [Authorize]
     public class AccountController : BaseController
     {
-        private readonly AppUserManager _userManager;
+        private readonly UserManager _userManager;
 
         private IAuthenticationManager _authenticationManager;
 
@@ -28,12 +28,12 @@ namespace OrganizerMVC.Controllers
             }
         }
 
-        public AccountController() : this(new AppUserManager(new AppUserStore(new DataContext())))
+        public AccountController() : this(new UserManager(new UserStore(new DataContext())))
         {
 
         }
 
-        public AccountController(AppUserManager userManager)
+        public AccountController(UserManager userManager)
         {
             _userManager = userManager;
         }
