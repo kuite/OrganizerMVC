@@ -4,8 +4,8 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using OrganizerMVC.DataAccess;
 using OrganizerMVC.Models;
+using OrganizerMVC.Models.Database;
 
 namespace OrganizerMVC.Controllers
 {
@@ -14,9 +14,23 @@ namespace OrganizerMVC.Controllers
     {
         private readonly AppUserManager _userManager;
 
-        public AccountController()
-            : this(new AppUserManager(new AppUserStore(new DataContext())))
+        private IAuthenticationManager _authenticationManager;
+
+        public IAuthenticationManager AuthenticationManager
         {
+            get
+            {
+                return _authenticationManager ?? Request.GetOwinContext().Authentication;
+            }
+            set
+            {
+                _authenticationManager = value;
+            }
+        }
+
+        public AccountController() : this(new AppUserManager(new AppUserStore(new DataContext())))
+        {
+
         }
 
         public AccountController(AppUserManager userManager)
@@ -50,11 +64,9 @@ namespace OrganizerMVC.Controllers
             if (user != null)
             {
                 await SignInAsync(user, model.RememberMe);
-                //var id = CurrentUser.UserId;
-                return Redirect(GetRedirectUrl("calendar/index"));
+                return RedirectToAction("index", "calendar");
             }
 
-            // user authN failed
             ModelState.AddModelError("", "Invalid email or password");
             return View();
         }
@@ -79,7 +91,7 @@ namespace OrganizerMVC.Controllers
                 return View();
             }
 
-            var user = new AppUser
+            var user = new User
             {
                 Email = model.Email,
                 UserName = model.Email
@@ -104,27 +116,20 @@ namespace OrganizerMVC.Controllers
 
         public ActionResult LogOut()
         {
-            GetAuthenticationManager().SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("index", "home");
         }
 
         #region Helpers
 
-        private async Task SignInAsync(AppUser user, bool isPersistent)
+        private async Task SignInAsync(User user, bool isPersistent)
         {
-            GetAuthenticationManager().SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             ClaimsIdentity identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
 
-            // Extend identity claims
             identity.AddClaim(new Claim(ClaimTypes.Sid, user.Id.ToString()));
 
-            GetAuthenticationManager().SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, identity);
-        }
-
-        private IAuthenticationManager GetAuthenticationManager()
-        {
-            var ctx = Request.GetOwinContext();
-            return ctx.Authentication;
+            AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, identity);
         }
 
         public enum ManageMessageId
@@ -133,16 +138,6 @@ namespace OrganizerMVC.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             Error
-        }
-
-        private string GetRedirectUrl(string returnUrl)
-        {
-            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
-            {
-                return Url.Action("index", "home");
-            }
-
-            return returnUrl;
         }
 
         protected override void Dispose(bool disposing)
