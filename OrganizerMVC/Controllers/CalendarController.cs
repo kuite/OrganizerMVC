@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using OrganizerMVC.DataAccess;
+using OrganizerMVC.Models;
 using OrganizerMVC.Models.Database;
 
 namespace OrganizerMVC.Controllers
@@ -7,14 +9,17 @@ namespace OrganizerMVC.Controllers
     [Authorize]
     public class CalendarController : BaseController
     {
-        private readonly DataContext db = new DataContext();
+        private IRepository<Activity, int> _repository;
+
+        public CalendarController(IRepository<Activity, int> repository)
+        {
+            _repository = repository;
+        }
 
         public ActionResult Index()
         {
-            //todo: get activites only which belongs for current user
-
             var id = CurrentUser.UserId;
-            var userActivities = db.Activities.Where(a => a.User.Id == id);
+            var activities = _repository.Get().Where(a => a.User.Id == id);
 
             return View();
         }

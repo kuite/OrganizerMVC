@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using OrganizerMVC.Models;
 using OrganizerMVC.Models.Database;
+using OrganizerMVC.ViewModels;
 
 namespace OrganizerMVC.Controllers
 {
