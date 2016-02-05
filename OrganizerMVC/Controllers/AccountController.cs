@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.Practices.Unity;
 using OrganizerMVC.Models;
 using OrganizerMVC.Models.Database;
 using OrganizerMVC.ViewModels;
@@ -29,6 +30,7 @@ namespace OrganizerMVC.Controllers
             }
         }
 
+        [InjectionConstructor]
         public AccountController() : this(new UserManager(new UserStore(new DataContext())))
         {
 

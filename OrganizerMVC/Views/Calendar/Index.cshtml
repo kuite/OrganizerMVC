@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Calendar</title>
-    <meta charset="utf-8"/>
+
+    <meta content="text/html; charset=UTF-8" />
     <link href="~/Content/fullcalendar.css" rel="stylesheet"/>
     <link href="~/Content/fullcalendar.print.css" rel="stylesheet" media="print"/>
 
@@ -11,10 +12,14 @@
     <script src="~/Scripts/fullcalendar.min.js"></script>
 
     <script>
-        
         $(document).ready(function() {
             $("#calendar").fullCalendar({
-                defaultDate: '2014-09-12',
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                defaultDate: new Date(),
                 editable: true,
                 eventLimit: true // allow "more" link when too many events
             });
