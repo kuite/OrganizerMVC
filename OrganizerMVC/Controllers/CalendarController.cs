@@ -24,11 +24,11 @@ namespace OrganizerMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add()
+        public ActionResult Add(Activity activity)
         {
+            _repository.Add(activity);
 
-
-            return RedirectToAction("Index", "Callendar");
+            return RedirectToAction("Index", "Calendar");
         }
     }
 }

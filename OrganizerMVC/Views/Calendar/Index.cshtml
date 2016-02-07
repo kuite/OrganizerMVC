@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@*@model OrganizerMVC.Models.Activity*@
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Calendar</title>
@@ -6,25 +8,42 @@
     <meta content="text/html; charset=UTF-8" />
     <link href="~/Content/fullcalendar.css" rel="stylesheet"/>
     <link href="~/Content/fullcalendar.print.css" rel="stylesheet" media="print"/>
+    <link type="text/css" rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="~/Content/bootstrap-timepicker.min.css"/>
 
+    <script type="text/javascript" src="~/Scripts/jquery.js"></script>
     <script src="~/Scripts/jquery-2.2.0.js"></script>
     <script src="~/Scripts/moment.js"></script>
     <script src="~/Scripts/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-timepicker.min.js"></script>
 
     <script>
         $(document).ready(function() {
             $("#calendar").fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
+                height: 800,
+                customButtons: {
+                    newActivityButton: {
+                        text: "New activity",
+                        click: function() {
+                            var selectedDate = $("#calendar").fullCalendar("getDate").format("YYYY-MM-DD");
+                            $("#myModal").modal("show");
+
+                            $("#datePicker").val(selectedDate);
+                        }
+                    }
                 },
+                header: {
+                    left: "prev,next today, newActivityButton",
+                    center: "title",
+                    right: "month,agendaWeek,agendaDay"
+                },
+                firstDay: 1,
                 defaultDate: new Date(),
                 editable: true,
-                eventLimit: true // allow "more" link when too many events
+                eventLimit: true
             });
         });
-
     </script>
 
     <style>
@@ -37,13 +56,85 @@
 
         #calendar {
             max-width: 900px;
+            height: 100%;
             margin: 0 auto;
         }
     </style>
 </head>
 <body>
-    
-<div id="calendar"></div>
 
+
+@*    <div class="input-group bootstrap-timepicker timepicker">*@
+@*        <input id="timepicker1" type="text" class="form-control input-small">*@
+@*        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>*@
+@*    </div>*@
+@**@
+@*    <script type="text/javascript">*@
+@*        $('#timepicker1').timepicker();*@
+@*    </script>*@
+
+
+
+
+<div id="calendar"></div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">New Activity</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    Date:
+                </div>
+                <input type="date" name="date" id="datePicker">
+                <div>
+                    Start:
+                </div>
+
+                <div>
+                    End:
+                </div>
+                <input data-uk-timepicker="{format:'24h'}" name="end" id="end">
+                <div>
+                    Name:
+                </div>
+                <input type="text" id="name"/>
+                <div>
+                    Description:
+                </div>
+                <textarea name="desc" id="desc" cols="40" rows="5"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
+                <button type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </body>
 </html>
+
+
+@*<!DOCTYPE html>*@
+@*<html>*@
+@*<head>*@
+@*    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />*@
+@*    <link type="text/css" rel="stylesheet" href="~/Content/bootstrap.min.css" />*@
+@*    <link type="text/css" rel="stylesheet" href="~/Content/bootstrap-timepicker.min.css" />*@
+@*    <script type="text/javascript" src="~/Scripts/jquery.js"></script>*@
+@*    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>*@
+@*    <script type="text/javascript" src="~/Scripts/bootstrap-timepicker.min.js"></script>*@
+@*</head>*@
+@*<body>*@
+@*    <div class="input-group bootstrap-timepicker timepicker">*@
+@*        <input id="timepicker1" type="text" class="form-control input-small">*@
+@*        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>*@
+@*    </div>*@
+@**@
+@*    <script type="text/javascript">*@
+@*        $('#timepicker1').timepicker();*@
+@*    </script>*@
+@*</body>*@
+@*</html>*@
