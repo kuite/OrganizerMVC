@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using OrganizerMVC.DataAccess;
 using OrganizerMVC.Models;
+using OrganizerMVC.Models.Database;
 
 namespace OrganizerMVC.Controllers
 {
@@ -24,11 +26,14 @@ namespace OrganizerMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(Activity activity)
+        public void Add(Activity actv)
         {
-            _repository.Add(activity);
+            var manager = new UserManager(new UserStore(_repository.CurrentContext));
+            var user = manager.FindById(CurrentUser.UserId);
 
-            return RedirectToAction("Index", "Calendar");
+            actv.User = user;
+
+            _repository.Add(actv);
         }
     }
 }

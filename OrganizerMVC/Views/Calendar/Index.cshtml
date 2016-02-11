@@ -1,4 +1,4 @@
-﻿@*@model OrganizerMVC.Models.Activity*@
+﻿@model IEnumerable<OrganizerMVC.Models.Activity>
 
 <!DOCTYPE html>
 <html>
@@ -39,10 +39,45 @@
                     center: "title",
                     right: "month,agendaWeek,agendaDay"
                 },
+                slotLabelFormat: "HH:mm",
                 firstDay: 1,
+                minTime: "05:00:00",
+                maxTime: "24:00:00",
                 defaultDate: new Date(),
                 editable: true,
-                eventLimit: true
+                eventLimit: true,
+                events: [
+				{
+				    title: 'Meeting',
+				    start: '2016-02-12T10:30:00',
+				    end: '2016-02-12T12:30:00'
+				},
+				{
+				    title: 'Lunch',
+				    start: '2016-02-12T12:00:00'
+				},
+				{
+				    title: 'Meeting',
+				    start: '2016-02-12T14:30:00'
+				},
+				{
+				    title: 'Happy Hour',
+				    start: '2016-02-12T17:30:00'
+				},
+				{
+				    title: 'Dinner',
+				    start: '2016-02-12T20:00:00'
+				},
+				{
+				    title: 'Birthday Party',
+				    start: '2016-02-13T07:00:00'
+				},
+				{
+				    title: 'Click for Wykop',
+				    url: 'http://wykop.pl/',
+				    start: '2016-02-28'
+				}
+                ]
             });
         });
     </script>
@@ -72,74 +107,92 @@
                     <h4 class="modal-title">New Activity</h4>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        Date:
-                    </div>
-                    <input type="date" name="date" id="datePicker">
-                    <div>
-                        Start:
-                    </div>
                     <div class="container">
-                        <div class="form-group col-lg-2">
-                            <div>
-                                <div class="input-group bootstrap-timepicker timepicker">
-                                    <input id="timepicker2" type="text" class="form-control input-small" style="width: 100px;">
-                                    <span class="input-group-addon" style=""><i class="glyphicon glyphicon-time"></i></span>
+                        @using (Html.BeginForm("Add", "Calendar", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                                    <form role="form">
+                                        <fieldset>
+                                            <div>
+                                                Date:
+                                            </div>
+                                            <input class="input-group bootstrap-timepicker timepicker" type="date" name="date" id="datePicker">
+                                            <br/>
+                                            <div>
+                                                Start:
+                                            </div>
+                                            <div class="container" style="padding-left: 0;">
+                                                <div class="form-group col-lg-2">
+                                                    <div>
+                                                        <div class="input-group bootstrap-timepicker timepicker">
+                                                            <input id="timepicker2" type="text" class="form-control input-small" style="width: 100px;">
+                                                            <span class="input-group-addon" style=""><i class="glyphicon glyphicon-time"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script type="text/javascript">
+
+                                                $(function () {
+                                                    $("#timepicker2").timepicker({
+                                                        autoclose: true,
+                                                        showMeridian: false
+                                                    });
+                                                    $(".showhide").click(function () {
+                                                        $(this).removeClass("bootstrap-timepicker-widget modal hide fade timepicker-orient-left timepicker-orient-bottom in");
+                                                        $(this).addClass("bootstrap-timepicker-widget dropdown-menu timepicker-orient-left timepicker-orient-top open");
+                                                    });
+                                                });
+                                            </script>
+
+                                            <div>
+                                                End:
+                                            </div>
+                                            <div class="container" style="padding-left: 0;">
+                                                <div class="form-group col-lg-2">
+                                                    <div>
+                                                        <div class="input-group bootstrap-timepicker timepicker">
+                                                            <input id="timepicker1" type="text" class="form-control input-small" style="width: 100px;">
+                                                            <span class="input-group-addon" style=""><i class="glyphicon glyphicon-time"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script type="text/javascript">
+
+                                                $(function () {
+                                                    $("#timepicker1").timepicker({
+                                                        autoclose: true,
+                                                        showMeridian: false
+                                                    });
+                                                    $(".showhide").click(function () {
+                                                        $(this).removeClass("bootstrap-timepicker-widget modal hide fade timepicker-orient-left timepicker-orient-bottom in");
+                                                        $(this).addClass("bootstrap-timepicker-widget dropdown-menu timepicker-orient-left timepicker-orient-top open");
+                                                    });
+                                                });
+                                            </script>
+
+                                            <div>
+                                                Name:
+                                            </div>
+                                            <input type="text" id="name" />
+                                            <div>
+                                                Description:
+                                            </div>
+                                            <textarea name="desc" id="desc" cols="40" rows="5"></textarea>
+
+                                            <div class="modal-footer">
+                                                <input type="submit" class="btn btn-primary" value="Add">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
+                                            </div>
+                                        </fieldset>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
-                    <script type="text/javascript">
-
-                        $(function() {
-                            $("#timepicker2").timepicker({
-                                autoclose: true
-                            });
-                            $(".showhide").click(function() {
-                                $(this).removeClass("bootstrap-timepicker-widget modal hide fade timepicker-orient-left timepicker-orient-bottom in");
-                                $(this).addClass("bootstrap-timepicker-widget dropdown-menu timepicker-orient-left timepicker-orient-top open");
-                            });
-                        });
-                    </script>
-
-                    <div>
-                        End:
-                    </div>
-                    <div class="container">
-                        <div class="form-group col-lg-2">
-                            <div>
-                                <div class="input-group bootstrap-timepicker timepicker">
-                                    <input id="timepicker1" type="text" class="form-control input-small" style="width: 100px;">
-                                    <span class="input-group-addon" style=""><i class="glyphicon glyphicon-time"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <script type="text/javascript">
-
-                        $(function() {
-                            $("#timepicker1").timepicker({
-                                autoclose: true
-                            });
-                            $(".showhide").click(function() {
-                                $(this).removeClass("bootstrap-timepicker-widget modal hide fade timepicker-orient-left timepicker-orient-bottom in");
-                                $(this).addClass("bootstrap-timepicker-widget dropdown-menu timepicker-orient-left timepicker-orient-top open");
-                            });
-                        });
-                    </script>
-
-                    <div>
-                        Name:
-                    </div>
-                    <input type="text" id="name" />
-                    <div>
-                        Description:
-                    </div>
-                    <textarea name="desc" id="desc" cols="40" rows="5"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
-                    <button type="button" class="btn btn-primary">Add</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

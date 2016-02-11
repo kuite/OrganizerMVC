@@ -9,7 +9,9 @@ namespace OrganizerMVC.Models
 
         public string Description { get; set; }
 
-        public string Time { get; set; }
+        public string Start { get; set; }
+
+        public string End { get; set; }
 
         public int Day { get; set; }
 
