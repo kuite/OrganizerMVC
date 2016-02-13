@@ -5,7 +5,7 @@ namespace OrganizerMVC.Models.Database
 {
     public class DataContext : IdentityDbContext<User, Role, int, UserLogin, UserRole, UserClaim>
     {
-        public DbSet<Event> Activities { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         public DataContext() : base("SchedulerMvc")
         {

@@ -12,52 +12,47 @@ namespace OrganizerMVC.Models.Database
         {
             var actv1 = new Event
             {
-                Year = 2015,
-                Month = 3,
                 Name = "Meczyk",
                 Description = "Friendly game with frinds",
-                Day = 20,
+                Date = "2016-02-16",
                 Start = DateTime.Now.ToString("HH:mm"),
+                End = DateTime.Now.AddHours(3).ToString("HH:mm")
             };
 
             var actv2 = new Event
             {
-                Year = 2015,
-                Month = 5,
                 Name = "Wykład",
                 Description = "twotwtwototw",
-                Day = 1,
+                Date = "2016-02-15",
                 Start = DateTime.Now.ToString("HH:mm"),
+                End = DateTime.Now.AddHours(3).ToString("HH:mm")
             };
 
             var actv3 = new Event
             {
-                Year = 2015,
-                Month = 7,
                 Name = "Meczyk",
                 Description = "threethreether",
-                Day = 330,
+                Date = "2016-02-10",
                 Start = DateTime.Now.ToString("HH:mm"),
+                End = DateTime.Now.AddHours(3).ToString("HH:mm")
             };
 
             var actv4 = new Event
             {
-                Year = 2015,
-                Month = 9,
                 Name = "Meczyk",
                 Description = "5fourfourfourfour",
-                Day = 40,
+                Date = "2016-02-11",
                 Start = DateTime.Now.ToString("HH:mm"),
+                End = DateTime.Now.AddHours(3).ToString("HH:mm")
             };
 
             var actv5 = new Event
             {
-                Year = 2015,
-                Month = 8,
                 Name = "Meczyk",
                 Description = "555fivefiveifve",
-                Day = 55,
+                Date = "2016-02-12",
                 Start = DateTime.Now.ToString("HH:mm"),
+                End = DateTime.Now.AddHours(3).ToString("HH:mm")
             };
 
             if (!context.Users.Any(u => u.UserName == "tester@wp.pl"))

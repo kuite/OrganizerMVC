@@ -1,11 +1,11 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using OrganizerMVC.DataAccess;
 using OrganizerMVC.Models;
-using OrganizerMVC.Models.Database;
+using OrganizerMVC.Models.Logic;
 using OrganizerMVC.ViewModels;
 
 namespace OrganizerMVC.Controllers
@@ -22,14 +22,11 @@ namespace OrganizerMVC.Controllers
 
         public ActionResult Index()
         {
-            var id = CurrentUser.UserId;
-            var userActivities = _repository.Get().Where(a => a.User.Id == id);
-
-            return View(userActivities);
+            return View();
         }
 
         [HttpPost]
-        public void AddEvent(EventViewModel actvm)
+        public void AddEvent(EventViewModel evm)
         {
             var manager = new UserManager(new UserStore(_repository.CurrentContext));
             var user = manager.FindById(CurrentUser.UserId);
@@ -37,55 +34,36 @@ namespace OrganizerMVC.Controllers
             var actv = new Event
             {
                 User = user,
-                Name = actvm.Name,
-                Description = actvm.Description,
-                Year = Int32.Parse(actvm.Date.Substring(0, 4)),
-                Month = Int32.Parse(actvm.Date.Substring(5, 2)),
-                Day = Int32.Parse(actvm.Date.Substring(8, 2)),
-                Start = actvm.Start,
-                End = actvm.End
+                Name = evm.Name,
+                Description = evm.Description,
+                Date = evm.Date,
+                Start = evm.Start,
+                End = evm.End
             };
 
             _repository.Add(actv);
         }
 
-        public string GetEvents()
+        public string GetUserEvents()
         {
-            var events = @"
-            				{
-            				    title: 'Meeting',
-            				    start: '2016-02-12T10:30:00',
-            				    end: '2016-02-12T12:30:00'
-            				},
-            				{
-            				    title: 'Lunch',
-            				    start: '2016-02-12T12:00:00'
-            				},
-            				{
-            				    title: 'Meeting',
-            				    start: '2016-02-12T14:30:00'
-            				},
-            				{
-            				    title: 'Happy Hour',
-            				    start: '2016-02-12T17:30:00'
-            				},
-            				{
-            				    title: 'Dinner',
-            				    start: '2016-02-12T20:00:00'
-            				},
-            				{
-            				    title: 'Birthday Party',
-            				    start: '2016-02-13T07:00:00'
-            				},
-            				{
-            				    title: 'Click for Wykop',
-            				    url: 'http://wykop.pl/',
-            				    start: '2016-02-28'
-            				}";
+            var id = CurrentUser.UserId;
+            var events = _repository.Get().Where(a => a.User.Id == id);
 
+            var calEvents = new List<CalendarEvent>();
+            calEvents.AddRange(events.Select(e => new CalendarEvent
+            {
+                title = e.Name,
+                description = e.Description,
+                start = Helpers.CombineDateWithTime(e.Start, e.Date),
+                end = Helpers.CombineDateWithTime(e.End, e.Date)
+            }));
 
-            var jsSerializer = new JavaScriptSerializer();
-            var json = jsSerializer.Serialize(events);
+            var json = JsonConvert.SerializeObject(calEvents, Formatting.None,
+                        new JsonSerializerSettings
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
+
             return json;
         }
     }

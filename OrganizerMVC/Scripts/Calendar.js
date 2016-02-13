@@ -16,7 +16,7 @@
             //do something about the error
         },
         success: function (response) {
-            //do something with response
+            //$("#calendar").fullCalendar( 'renderEvent', event);
         }
     });
     return false;// if it's a link to prevent post
@@ -29,26 +29,19 @@ function LoadEvents() {
     $.ajax({
         async: false,
         type: "GET",
-        url: "Calendar/GetEvents",
-        dataType: "json",
+        url: "Calendar/GetUserEvents",
+        dataType: "text",
         error: function (xhr, status, error) {
             var alertMsg = string.concat("Error: ", error, "Status: ", status);
             window.alert(alertMsg);
         },
         success: function (response) {
+            var formatted = '{ "events" : ' + response;
 
-            var json = '{ "events" : [' +
-          '{ "title":"Michel" , "start":"2016-02-12T07:30:00" ,"end":"2016-02-12T10:30:00" },' +
-          '{ "title":"Richard" , "start":"2016-02-13T07:30:00","end":"2016-02-13T10:30:00" },' +
-          '{ "title":"James" , "start":"2016-02-14T07:30:00","end":"2016-02-14T10:30:00" } ]}';
-
-
-            var obj = JSON.parse(json);
+            var obj = JSON.parse(response);
             events = obj;
         }
     });
 
     return events;
-
-
 }

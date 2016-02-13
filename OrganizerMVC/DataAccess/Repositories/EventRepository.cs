@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using System.Linq;
-using System.Web;
 using OrganizerMVC.Models;
 using OrganizerMVC.Models.Database;
 
@@ -28,24 +27,24 @@ namespace OrganizerMVC.DataAccess.Repositories
 
         public IEnumerable<Event> Get()
         {
-            return Context.Activities.ToList();
+            return Context.Events.ToList();
         }
 
         public Event Get(int id)
         {
-            return Context.Activities.Find(id);
+            return Context.Events.Find(id);
         }
 
         public void Add(Event entity)
         {
-            Context.Activities.Add(entity);
+            Context.Events.Add(entity);
             Context.SaveChanges();
         }
 
         public void Remove(Event entity)
         {
-            var obj = Context.Activities.Find(entity.EventId);
-            Context.Activities.Remove(obj);
+            var obj = Context.Events.Find(entity.EventId);
+            Context.Events.Remove(obj);
             Context.SaveChanges();
         }
     }

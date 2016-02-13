@@ -1,6 +1,4 @@
-﻿@model IEnumerable<OrganizerMVC.Models.Event>
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>Calendar</title>
@@ -21,35 +19,35 @@
     <script type="text/javascript" src="~/Scripts/bootstrap-timepicker.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $("#calendar").fullCalendar({
-                height: 800,
-                customButtons: {
-                    newEventButton: {
-                        text: "New event",
-                        click: function () {
-                            var selectedDate = $("#calendar").fullCalendar("getDate").format("YYYY-MM-DD");
-                            $("#myModal").modal("show");
+    $(document).ready(function () {
+        $("#calendar").fullCalendar({
+            height: 800,
+            customButtons: {
+                newEventButton: {
+                    text: "New event",
+                    click: function () {
+                        var selectedDate = $("#calendar").fullCalendar("getDate").format("YYYY-MM-DD");
+                        $("#myModal").modal("show");
 
-                            $("#datePicker").val(selectedDate);
-                        }
+                        $("#datePicker").val(selectedDate);
                     }
-                },
-                header: {
-                    left: "prev,next today, newEventButton",
-                    center: "title",
-                    right: "month,agendaWeek,agendaDay"
-                },
-                slotLabelFormat: "HH:mm",
-                firstDay: 1,
-                minTime: "05:00:00",
-                maxTime: "24:00:00",
-                defaultDate: new Date(),
-                editable: true,
-                eventLimit: true,
-                events: LoadEvents()
-            });
-        });
+                }
+            },
+            header: {
+                left: "prev,next today, newEventButton",
+                center: "title",
+                right: "month,agendaWeek,agendaDay"
+            },
+            slotLabelFormat: "HH:mm",
+            firstDay: 1,
+            minTime: "05:00:00",
+            maxTime: "24:00:00",
+            defaultDate: new Date(),
+            editable: true,
+            eventLimit: true,
+            events: LoadEvents()
+    });
+    });
     </script>
 
     <style>
