@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 
 namespace OrganizerMVC.Models.Database
@@ -11,7 +10,7 @@ namespace OrganizerMVC.Models.Database
     {
         protected override void Seed(DataContext context)
         {
-            var actv1 = new Activity
+            var actv1 = new Event
             {
                 Year = 2015,
                 Month = 3,
@@ -21,7 +20,7 @@ namespace OrganizerMVC.Models.Database
                 Start = DateTime.Now.ToString("HH:mm"),
             };
 
-            var actv2 = new Activity
+            var actv2 = new Event
             {
                 Year = 2015,
                 Month = 5,
@@ -31,7 +30,7 @@ namespace OrganizerMVC.Models.Database
                 Start = DateTime.Now.ToString("HH:mm"),
             };
 
-            var actv3 = new Activity
+            var actv3 = new Event
             {
                 Year = 2015,
                 Month = 7,
@@ -41,7 +40,7 @@ namespace OrganizerMVC.Models.Database
                 Start = DateTime.Now.ToString("HH:mm"),
             };
 
-            var actv4 = new Activity
+            var actv4 = new Event
             {
                 Year = 2015,
                 Month = 9,
@@ -51,7 +50,7 @@ namespace OrganizerMVC.Models.Database
                 Start = DateTime.Now.ToString("HH:mm"),
             };
 
-            var actv5 = new Activity
+            var actv5 = new Event
             {
                 Year = 2015,
                 Month = 8,
@@ -71,7 +70,7 @@ namespace OrganizerMVC.Models.Database
                     UserName = "tester@wp.pl",
                     Email = "tester@wp.pl",
                     PhoneNumber = "0797697898",
-                    Activities = new List<Activity> { actv1, actv2, actv3, actv4, actv5 }
+                    Activities = new List<Event> { actv1, actv2, actv3, actv4, actv5 }
                 };
                 userManager.Create(userToInsert, "tester");
 

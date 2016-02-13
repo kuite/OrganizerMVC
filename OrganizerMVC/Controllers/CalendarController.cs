@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Microsoft.AspNet.Identity;
 using OrganizerMVC.DataAccess;
 using OrganizerMVC.Models;
@@ -12,9 +13,9 @@ namespace OrganizerMVC.Controllers
     [Authorize]
     public class CalendarController : BaseController
     {
-        private readonly IRepository<Activity, int> _repository;
+        private readonly IRepository<Event, int> _repository;
 
-        public CalendarController(IRepository<Activity, int> repository)
+        public CalendarController(IRepository<Event, int> repository)
         {
             _repository = repository;
         }
@@ -28,12 +29,12 @@ namespace OrganizerMVC.Controllers
         }
 
         [HttpPost]
-        public void Add(ActivityViewModel actvm)
+        public void AddEvent(EventViewModel actvm)
         {
             var manager = new UserManager(new UserStore(_repository.CurrentContext));
             var user = manager.FindById(CurrentUser.UserId);
 
-            var actv = new Activity
+            var actv = new Event
             {
                 User = user,
                 Name = actvm.Name,
@@ -46,6 +47,46 @@ namespace OrganizerMVC.Controllers
             };
 
             _repository.Add(actv);
+        }
+
+        public string GetEvents()
+        {
+            var events = @"
+            				{
+            				    title: 'Meeting',
+            				    start: '2016-02-12T10:30:00',
+            				    end: '2016-02-12T12:30:00'
+            				},
+            				{
+            				    title: 'Lunch',
+            				    start: '2016-02-12T12:00:00'
+            				},
+            				{
+            				    title: 'Meeting',
+            				    start: '2016-02-12T14:30:00'
+            				},
+            				{
+            				    title: 'Happy Hour',
+            				    start: '2016-02-12T17:30:00'
+            				},
+            				{
+            				    title: 'Dinner',
+            				    start: '2016-02-12T20:00:00'
+            				},
+            				{
+            				    title: 'Birthday Party',
+            				    start: '2016-02-13T07:00:00'
+            				},
+            				{
+            				    title: 'Click for Wykop',
+            				    url: 'http://wykop.pl/',
+            				    start: '2016-02-28'
+            				}";
+
+
+            var jsSerializer = new JavaScriptSerializer();
+            var json = jsSerializer.Serialize(events);
+            return json;
         }
     }
 }

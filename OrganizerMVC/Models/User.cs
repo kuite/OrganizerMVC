@@ -5,7 +5,7 @@ namespace OrganizerMVC.Models
 {
     public class User : IdentityUser<int, UserLogin, UserRole, UserClaim>
     {
-        public virtual ICollection<Activity> Activities { get; set; }
+        public virtual ICollection<Event> Activities { get; set; }
     }
 
     public class UserLogin : IdentityUserLogin<int>

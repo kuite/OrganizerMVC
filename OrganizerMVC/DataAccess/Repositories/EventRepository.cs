@@ -8,7 +8,7 @@ using OrganizerMVC.Models.Database;
 
 namespace OrganizerMVC.DataAccess.Repositories
 {
-    public class ActivityRepository : IRepository<Activity, int>
+    public class EventRepository : IRepository<Event, int>
     {
         [Dependency]
         public DataContext Context { get; set; }
@@ -26,25 +26,25 @@ namespace OrganizerMVC.DataAccess.Repositories
             }
         }
 
-        public IEnumerable<Activity> Get()
+        public IEnumerable<Event> Get()
         {
             return Context.Activities.ToList();
         }
 
-        public Activity Get(int id)
+        public Event Get(int id)
         {
             return Context.Activities.Find(id);
         }
 
-        public void Add(Activity entity)
+        public void Add(Event entity)
         {
             Context.Activities.Add(entity);
             Context.SaveChanges();
         }
 
-        public void Remove(Activity entity)
+        public void Remove(Event entity)
         {
-            var obj = Context.Activities.Find(entity.ActivityId);
+            var obj = Context.Activities.Find(entity.EventId);
             Context.Activities.Remove(obj);
             Context.SaveChanges();
         }

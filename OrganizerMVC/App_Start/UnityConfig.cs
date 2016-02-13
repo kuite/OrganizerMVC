@@ -14,7 +14,7 @@ namespace OrganizerMVC
             var container = new UnityContainer();
             //Register the Repository in the Unity Container
 
-            container.RegisterType<IRepository<Activity, int>, ActivityRepository>();
+            container.RegisterType<IRepository<Event, int>, EventRepository>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

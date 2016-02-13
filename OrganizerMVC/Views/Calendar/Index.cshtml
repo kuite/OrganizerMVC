@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OrganizerMVC.Models.Activity>
+﻿@model IEnumerable<OrganizerMVC.Models.Event>
 
 <!DOCTYPE html>
 <html>
@@ -25,8 +25,8 @@
             $("#calendar").fullCalendar({
                 height: 800,
                 customButtons: {
-                    newActivityButton: {
-                        text: "New activity",
+                    newEventButton: {
+                        text: "New event",
                         click: function () {
                             var selectedDate = $("#calendar").fullCalendar("getDate").format("YYYY-MM-DD");
                             $("#myModal").modal("show");
@@ -36,7 +36,7 @@
                     }
                 },
                 header: {
-                    left: "prev,next today, newActivityButton",
+                    left: "prev,next today, newEventButton",
                     center: "title",
                     right: "month,agendaWeek,agendaDay"
                 },
@@ -47,38 +47,7 @@
                 defaultDate: new Date(),
                 editable: true,
                 eventLimit: true,
-                events: [
-				{
-				    title: 'Meeting',
-				    start: '2016-02-12T10:30:00',
-				    end: '2016-02-12T12:30:00'
-				},
-				{
-				    title: 'Lunch',
-				    start: '2016-02-12T12:00:00'
-				},
-				{
-				    title: 'Meeting',
-				    start: '2016-02-12T14:30:00'
-				},
-				{
-				    title: 'Happy Hour',
-				    start: '2016-02-12T17:30:00'
-				},
-				{
-				    title: 'Dinner',
-				    start: '2016-02-12T20:00:00'
-				},
-				{
-				    title: 'Birthday Party',
-				    start: '2016-02-13T07:00:00'
-				},
-				{
-				    title: 'Click for Wykop',
-				    url: 'http://wykop.pl/',
-				    start: '2016-02-28'
-				}
-                ]
+                events: LoadEvents()
             });
         });
     </script>
@@ -105,7 +74,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">New Activity</h4>
+                    <h4 class="modal-title">New Event</h4>
                 </div>
                 <div class="modal-body">
                     <div class="container">
@@ -182,7 +151,7 @@
                                             <textarea name="desc" id="desc" cols="40" rows="5"></textarea>
 
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary" onclick="AddActivity(this)">Add</button>
+                                                <button type="button" class="btn btn-primary" onclick="AddUserEvent(this)" data-dismiss="modal">Add</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
                                             </div>
                                         </fieldset>

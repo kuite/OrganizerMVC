@@ -1,9 +1,9 @@
 ﻿
 namespace OrganizerMVC.Models
 {
-    public class Activity
+    public class Event
     {
-        public int ActivityId { get; set; }
+        public int EventId { get; set; }
 
         public string Name { get; set; }
 
