@@ -29,3 +29,11 @@
 .actionLink {
     
 }
+
+.delete-button {
+  background-color: #d9534f;
+}
+
+.float-left {
+    float: left;
+}

@@ -26,12 +26,12 @@ namespace OrganizerMVC.Controllers
         }
 
         [HttpPost]
-        public void AddEvent(EventViewModel evm)
+        public string AddEvent(EventViewModel evm)
         {
             var manager = new UserManager(new UserStore(_repository.CurrentContext));
             var user = manager.FindById(CurrentUser.UserId);
 
-            var actv = new Event
+            var newEvent = new Event
             {
                 User = user,
                 Name = evm.Name,
@@ -41,7 +41,24 @@ namespace OrganizerMVC.Controllers
                 End = evm.End
             };
 
-            _repository.Add(actv);
+            _repository.Add(newEvent);
+
+            var evnt = new CalendarEvent
+            {
+                title = newEvent.Name,
+                description = newEvent.Description,
+                start = Helpers.CombineDateWithTime(newEvent.Start, newEvent.Date),
+                end = Helpers.CombineDateWithTime(newEvent.End, newEvent.Date),
+                id = newEvent.EventId
+            };
+
+            var json = JsonConvert.SerializeObject(evnt, Formatting.None,
+                        new JsonSerializerSettings
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
+
+            return json;
         }
 
         public string GetUserEvents()
@@ -55,7 +72,8 @@ namespace OrganizerMVC.Controllers
                 title = e.Name,
                 description = e.Description,
                 start = Helpers.CombineDateWithTime(e.Start, e.Date),
-                end = Helpers.CombineDateWithTime(e.End, e.Date)
+                end = Helpers.CombineDateWithTime(e.End, e.Date),
+                id = e.EventId
             }));
 
             var json = JsonConvert.SerializeObject(calEvents, Formatting.None,

@@ -291,7 +291,20 @@ previous button's border...
 	padding: 2px 4px;
 }
 
-.fc-popover .fc-header .fc-title {
+.fc-desc {
+    margin: 0 2px;
+    color: aliceblue;
+    position: relative;
+    top: 15px;
+    font-size: 12px;
+}
+
+.fc-title {
+    margin: 0 2px;
+    font-size: 12px;
+}
+
+.fc-popover .fc-header {
 	margin: 0 2px;
 }
 

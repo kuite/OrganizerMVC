@@ -13,7 +13,7 @@
     <script type="text/javascript" src="~/Scripts/jquery.js"></script>
     <script src="~/Scripts/jquery-2.2.0.js"></script>
     <script src="~/Scripts/moment.js"></script>
-    <script src="~/Scripts/fullcalendar.min.js"></script>
+    <script src="~/Scripts/fullcalendar.js"></script>
     <script src="~/Scripts/Calendar.js"></script>
     <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="~/Scripts/bootstrap-timepicker.min.js"></script>
@@ -21,7 +21,7 @@
     <script>
     $(document).ready(function () {
         $("#calendar").fullCalendar({
-            height: 800,
+            height: 960,
             customButtons: {
                 newEventButton: {
                     text: "New event",
@@ -38,14 +38,31 @@
                 center: "title",
                 right: "month,agendaWeek,agendaDay"
             },
-            slotLabelFormat: "HH:mm",
             firstDay: 1,
             minTime: "05:00:00",
             maxTime: "24:00:00",
             defaultDate: new Date(),
             editable: true,
+            eventStartEditable: false,
+            eventDurationEditable: false,
             eventLimit: true,
-            events: LoadEvents()
+            eventRender: function (event, element, view) {
+                element.bind("dblclick", event, EventDoubleClicked);
+
+                if (view.name === "agendaDay") {
+                    var spn = document.createElement("span");
+                    spn.className = "fc-desc";
+                    spn.textContent = event.description;
+
+                    element.find(".fc-content").append(spn);
+                }
+            },
+            axisFormat: "HH:mm",
+            timeFormat: {
+                agenda: "H:mm"
+            },
+            events: LoadEvents(),
+            complete: CalendarCallback()
     });
     });
     </script>
@@ -77,14 +94,14 @@
                 <div class="modal-body">
                     <div class="container">
                             <div class="row" style="margin-top: 20px">
-                                <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                                <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3" style="margin-left: 10%; width: 380px;">
                                     <form role="form">
                                         <fieldset>
                                             <div>
                                                 Date:
                                             </div>
                                             <input class="input-group bootstrap-timepicker timepicker" type="date" name="date" id="datePicker">
-                                            <br/>
+                                            <br />
                                             <div>
                                                 Start:
                                             </div>
@@ -149,8 +166,8 @@
                                             <textarea name="desc" id="desc" cols="40" rows="5"></textarea>
 
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" onclick="AddUserEvent(this)" data-dismiss="modal">Add</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
+                                                <button type="button" class="btn btn-default float-left" onclick="AddUserEvent(this)" data-dismiss="modal">Add</button>
+                                                <button type="button" class="btn btn-default float-left" data-dismiss="modal">Discard</button>
                                             </div>
                                         </fieldset>
                                     </form>
@@ -160,7 +177,104 @@
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+</div><!-- /.modal -->
+
+    <div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" style="">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Editing existing event:</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3" style="margin-left: 10%; width: 380px;">
+                                <form role="form">
+                                    <fieldset>
+                                        <div>
+                                            Date:
+                                        </div>
+                                        <input class="input-group bootstrap-timepicker timepicker" type="date" name="date" id="dateEditor">
+                                        <br />
+                                        <div>
+                                            Start:
+                                        </div>
+                                        <div class="container" style="padding-left: 0;">
+                                            <div class="form-group col-lg-2">
+                                                <div>
+                                                    <div class="input-group bootstrap-timepicker timepicker">
+                                                        <input id="startEdit" type="text" class="form-control input-small" style="width: 100px;">
+                                                        <span class="input-group-addon" style=""><i class="glyphicon glyphicon-time"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script type="text/javascript">
+
+                                            $(function () {
+                                                $("#startEdit").timepicker({
+                                                    autoclose: true,
+                                                    showMeridian: false
+                                                });
+                                                $(".showhide").click(function () {
+                                                    $(this).removeClass("bootstrap-timepicker-widget modal hide fade timepicker-orient-left timepicker-orient-bottom in");
+                                                    $(this).addClass("bootstrap-timepicker-widget dropdown-menu timepicker-orient-left timepicker-orient-top open");
+                                                });
+                                            });
+                                        </script>
+
+                                        <div>
+                                            End:
+                                        </div>
+                                        <div class="container" style="padding-left: 0;">
+                                            <div class="form-group col-lg-2">
+                                                <div>
+                                                    <div class="input-group bootstrap-timepicker timepicker">
+                                                        <input id="endEdit" type="text" class="form-control input-small" style="width: 100px;">
+                                                        <span class="input-group-addon" style=""><i class="glyphicon glyphicon-time"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script type="text/javascript">
+
+                                            $(function () {
+                                                $("#endEdit").timepicker({
+                                                    autoclose: true,
+                                                    showMeridian: false
+                                                });
+                                                $(".showhide").click(function () {
+                                                    $(this).removeClass("bootstrap-timepicker-widget modal hide fade timepicker-orient-left timepicker-orient-bottom in");
+                                                    $(this).addClass("bootstrap-timepicker-widget dropdown-menu timepicker-orient-left timepicker-orient-top open");
+                                                });
+                                            });
+                                        </script>
+
+                                        <div>
+                                            Name:
+                                        </div>
+                                        <input type="text" id="nameEdit" />
+                                        <div>
+                                            Description:
+                                        </div>
+                                        <textarea name="desc" id="descEdit" cols="40" rows="5"></textarea>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default float-left" onclick=" SaveUserEvent(this) " data-dismiss="modal">Save</button>
+                                            <button type="button" class="btn btn-default float-left" data-dismiss="modal">Discard</button>
+                                            <button type="button" class="delete-button btn btn-default" onclick=" deleteuserevent(this) " data-dismiss=" modal" style="float: right; margin: 0; padding: 6px;">Delete event</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 </body>
 
 </html>
