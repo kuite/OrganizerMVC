@@ -13,5 +13,6 @@ namespace OrganizerMVC.DataAccess
         TEnt Get(TPk id);
         void Add(TEnt entity);
         void Remove(TEnt entity);
+        void Update(TEnt entity);
     }
 }

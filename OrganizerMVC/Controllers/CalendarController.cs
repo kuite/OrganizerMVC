@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -34,7 +35,7 @@ namespace OrganizerMVC.Controllers
             var newEvent = new Event
             {
                 User = user,
-                Name = evm.Name,
+                Title = evm.Title,
                 Description = evm.Description,
                 Date = evm.Date,
                 Start = evm.Start,
@@ -45,7 +46,7 @@ namespace OrganizerMVC.Controllers
 
             var evnt = new CalendarEvent
             {
-                title = newEvent.Name,
+                title = newEvent.Title,
                 description = newEvent.Description,
                 start = Helpers.CombineDateWithTime(newEvent.Start, newEvent.Date),
                 end = Helpers.CombineDateWithTime(newEvent.End, newEvent.Date),
@@ -69,7 +70,7 @@ namespace OrganizerMVC.Controllers
             var calEvents = new List<CalendarEvent>();
             calEvents.AddRange(events.Select(e => new CalendarEvent
             {
-                title = e.Name,
+                title = e.Title,
                 description = e.Description,
                 start = Helpers.CombineDateWithTime(e.Start, e.Date),
                 end = Helpers.CombineDateWithTime(e.End, e.Date),
@@ -81,6 +82,50 @@ namespace OrganizerMVC.Controllers
                         {
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                         });
+
+            return json;
+        }
+
+        [HttpPost]
+        public string DeleteEvent(int id)
+        {
+            int deleted;
+            var evt = _repository.Get(id);
+
+            if (evt != null)
+            {
+                _repository.Remove(evt);
+                deleted = id;
+            }
+            else
+            {
+                deleted = 0;
+            }
+
+            var json = JsonConvert.SerializeObject(deleted, Formatting.None);
+
+            return json;
+        }
+
+        [HttpPost]
+        public string UpdateEvent(EventViewModel evm)
+        {
+            var manager = new UserManager(new UserStore(_repository.CurrentContext));
+            var user = manager.FindById(CurrentUser.UserId);
+
+            var evt = new Event
+            {
+                EventId = evm.Id,
+                User = user,
+                Title = evm.Title,
+                Description = evm.Description,
+                Date = evm.Date,
+                Start = evm.Start,
+                End = evm.End
+            };
+            _repository.Update(evt);
+
+            var json = JsonConvert.SerializeObject(true, Formatting.None);
 
             return json;
         }

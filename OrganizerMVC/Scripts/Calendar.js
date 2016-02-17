@@ -3,10 +3,10 @@
 
     $.ajax({
         type: "POST",
-        url: "AddEvent",
+        url: "Calendar/AddEvent",
         dataType: "json",
         data: {
-            Name: $("#name").val(),
+            Title: $("#title").val(),
             Description: $("#desc").val(),
             Date: $("#datePicker").val(),
             Start: $("#start").val(),
@@ -20,11 +20,12 @@
 
             myCalendar.fullCalendar();
             var myEvent = {
-                title: $("#name").val(),
+                title: $("#title").val(),
                 allDay: false,
                 description: response.description,
                 start: response.start,
-                end: response.end
+                end: response.end,
+                id: response.id
             };
             myCalendar.fullCalendar("renderEvent", myEvent);
         }
@@ -36,25 +37,51 @@ function CalendarCallback() {
 //    var title = $("#calendar .fc-toolbar .fc-center").firstChild.textContent;
 }
 
-function DeleteUserEvent(btnClicked) {
-    var $form = $(btnClicked).parents("form");
-
+function DeleteUserEvent(id) {
     $.ajax({
         type: "POST",
-        url: "DeleteEvent",
+        url: "Calendar/DeleteEvent",
         dataType: "json",
         data: {
-            Name: $("#name").val(),
-            Description: $("#desc").val(),
-            Date: $("#datePicker").val(),
-            Start: $("#start").val(),
-            End: $("#end").val()
+            id: id.data
         },
         error: function (xhr, status, error) {
+            var f = error.message;
             //do something about the error
         },
         success: function (response) {
-            //delete event from calendar without rereshing page
+            if (response != 0) {
+                $('#calendar').fullCalendar("removeEvents", response);
+                HideEditModal();
+            }
+        }
+    });
+    return false;// if it's a link to prevent post
+}
+
+function UpdateEvent(id) {
+    $.ajax({
+        type: "POST",
+        url: "Calendar/UpdateEvent",
+        dataType: "json",
+        data: {
+            Id: id.data,
+            Title: $("#titleEdit").val(),
+            Description: $("#descEdit").val(),
+            Date: $("#dateEditor").val(),
+            Start: $("#startEdit").val(),
+            End: $("#endEdit").val()
+        },
+        error: function (xhr, status, error) {
+            var f = error.message;
+            //do something about the error
+        },
+        success: function (response) {
+            if (response) {
+                //modifiy event on calendar
+                HideEditModal();
+                //$("#calendar").fullCalendar('rerenderEvents');
+            }
         }
     });
     return false;// if it's a link to prevent post
@@ -66,15 +93,28 @@ function EventDoubleClicked(data) {
 
     $("#editEventModal").modal("show");
     $("#dateEditor").val(event.start.format("YYYY-MM-DD"));
+    $("#endEdit").val(event.end.format("HH:mm"));
+    $("#startEdit").val(event.start.format("HH:mm"));
+    $("#titleEdit").val(event.title);
+    $("#descEdit").val(event.description);
+
+
+    $("#delButton").bind("click", id, DeleteUserEvent);
+    //$("#delButton").bind("click", HideEditModal);
+    $("#saveButton").bind("click", id, UpdateEvent);
+    //$("#saveButton").bind("click", HideEditModal);
 }
 
+function HideEditModal() {
+    $("#editEventModal").modal("hide");
+}
 
 function LoadEvents() {
     var events = [];
     $.ajax({
         async: false,
         type: "GET",
-        url: "GetUserEvents",
+        url: "Calendar/GetUserEvents",
         dataType: "text",
         error: function (xhr, status, error) {
             var alertMsg = string.concat("Error: ", error, "Status: ", status);

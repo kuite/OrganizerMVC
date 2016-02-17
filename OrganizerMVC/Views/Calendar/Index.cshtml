@@ -27,8 +27,11 @@
                     text: "New event",
                     click: function () {
                         var selectedDate = $("#calendar").fullCalendar("getDate").format("YYYY-MM-DD");
+
                         $("#myModal").modal("show");
 
+                        $("#title").val("");
+                        $("#desc").val("");
                         $("#datePicker").val(selectedDate);
                     }
                 }
@@ -39,7 +42,7 @@
                 right: "month,agendaWeek,agendaDay"
             },
             firstDay: 1,
-            minTime: "05:00:00",
+            minTime: "00:00:00",
             maxTime: "24:00:00",
             defaultDate: new Date(),
             editable: true,
@@ -157,9 +160,9 @@
                                             </script>
 
                                             <div>
-                                                Name:
+                                                Title:
                                             </div>
-                                            <input type="text" id="name" />
+                                            <input type="text" id="title" />
                                             <div>
                                                 Description:
                                             </div>
@@ -252,18 +255,18 @@
                                         </script>
 
                                         <div>
-                                            Name:
+                                            Title:
                                         </div>
-                                        <input type="text" id="nameEdit" />
+                                        <input type="text" id="titleEdit" />
                                         <div>
                                             Description:
                                         </div>
                                         <textarea name="desc" id="descEdit" cols="40" rows="5"></textarea>
 
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default float-left" onclick=" SaveUserEvent(this) " data-dismiss="modal">Save</button>
+                                            <button type="button" class="btn btn-default float-left" id="saveButton" data-dismiss="modal">Save</button>
                                             <button type="button" class="btn btn-default float-left" data-dismiss="modal">Discard</button>
-                                            <button type="button" class="delete-button btn btn-default" onclick=" deleteuserevent(this) " data-dismiss=" modal" style="float: right; margin: 0; padding: 6px;">Delete event</button>
+                                            <button type="button" class="delete-button btn btn-default" data-dismiss="modal" id="delButton" style="float: right; margin: 0; padding: 6px;">Delete event</button>
                                         </div>
                                     </fieldset>
                                 </form>

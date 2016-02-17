@@ -12,7 +12,7 @@ namespace OrganizerMVC.Models.Database
         {
             var actv1 = new Event
             {
-                Name = "Meczyk",
+                Title = "Meczyk",
                 Description = "Friendly game with frinds",
                 Date = "2016-02-16",
                 Start = DateTime.Now.ToString("HH:mm"),
@@ -21,7 +21,7 @@ namespace OrganizerMVC.Models.Database
 
             var actv2 = new Event
             {
-                Name = "Wykład",
+                Title = "Wykład",
                 Description = "twotwtwototw",
                 Date = "2016-02-15",
                 Start = DateTime.Now.ToString("HH:mm"),
@@ -30,7 +30,7 @@ namespace OrganizerMVC.Models.Database
 
             var actv3 = new Event
             {
-                Name = "Meczyk",
+                Title = "Meczyk",
                 Description = "threethreether",
                 Date = "2016-02-10",
                 Start = DateTime.Now.ToString("HH:mm"),
@@ -39,7 +39,7 @@ namespace OrganizerMVC.Models.Database
 
             var actv4 = new Event
             {
-                Name = "Meczyk",
+                Title = "Meczyk",
                 Description = "5fourfourfourfour",
                 Date = "2016-02-11",
                 Start = DateTime.Now.ToString("HH:mm"),
@@ -48,7 +48,7 @@ namespace OrganizerMVC.Models.Database
 
             var actv5 = new Event
             {
-                Name = "Meczyk",
+                Title = "Meczyk",
                 Description = "555fivefiveifve",
                 Date = "2016-02-12",
                 Start = DateTime.Now.ToString("HH:mm"),

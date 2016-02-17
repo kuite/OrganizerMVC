@@ -41,6 +41,12 @@ namespace OrganizerMVC.DataAccess.Repositories
             Context.SaveChanges();
         }
 
+        public void Update(Event entity)
+        {
+            Remove(entity);
+            Add(entity);
+        }
+
         public void Remove(Event entity)
         {
             var obj = Context.Events.Find(entity.EventId);

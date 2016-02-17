@@ -14,7 +14,7 @@
 
     public class CalendarEvent
     {
-        public int id { get; set; }
+        public int? id { get; set; }
         public string title { get; set; }
         public string description { get; set; }
         public string start { get; set; }
