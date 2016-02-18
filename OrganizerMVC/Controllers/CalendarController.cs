@@ -89,20 +89,20 @@ namespace OrganizerMVC.Controllers
         [HttpPost]
         public string DeleteEvent(int id)
         {
-            int deleted;
+            int deletedId;
             var evt = _repository.Get(id);
 
             if (evt != null)
             {
                 _repository.Remove(evt);
-                deleted = id;
+                deletedId = id;
             }
             else
             {
-                deleted = 0;
+                deletedId = 0;
             }
 
-            var json = JsonConvert.SerializeObject(deleted, Formatting.None);
+            var json = JsonConvert.SerializeObject(deletedId, Formatting.None);
 
             return json;
         }
@@ -112,6 +112,7 @@ namespace OrganizerMVC.Controllers
         {
             var manager = new UserManager(new UserStore(_repository.CurrentContext));
             var user = manager.FindById(CurrentUser.UserId);
+            var evId = evm.Id;
 
             var evt = new Event
             {
@@ -125,7 +126,7 @@ namespace OrganizerMVC.Controllers
             };
             _repository.Update(evt);
 
-            var json = JsonConvert.SerializeObject(true, Formatting.None);
+            var json = JsonConvert.SerializeObject(evId);
 
             return json;
         }

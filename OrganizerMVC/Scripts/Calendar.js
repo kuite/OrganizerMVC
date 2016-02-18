@@ -50,8 +50,8 @@ function DeleteUserEvent(id) {
             //do something about the error
         },
         success: function (response) {
-            if (response != 0) {
-                $('#calendar').fullCalendar("removeEvents", response);
+            if (response != null) {
+                $("#calendar").fullCalendar("removeEvents", response);
                 HideEditModal();
             }
         }
@@ -77,10 +77,22 @@ function UpdateEvent(id) {
             //do something about the error
         },
         success: function (response) {
-            if (response) {
-                //modifiy event on calendar
+            if (response != null) {
+                var id = response;
+                $("#calendar").fullCalendar("removeEvents", id);
+
+                var myEvent = {
+                    title: $("#titleEdit").val(),
+                    allDay: false,
+                    description: $("#descEdit").val(),
+                    start: $("#dateEditor").val() + "T" + $("#startEdit").val(),
+                    end: $("#dateEditor").val() + "T" + $("#endEdit").val(),
+                    id: id
+                };
+
+                $("#calendar").fullCalendar("renderEvent", myEvent);
+
                 HideEditModal();
-                //$("#calendar").fullCalendar('rerenderEvents');
             }
         }
     });

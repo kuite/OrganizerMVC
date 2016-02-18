@@ -43,8 +43,14 @@ namespace OrganizerMVC.DataAccess.Repositories
 
         public void Update(Event entity)
         {
-            Remove(entity);
-            Add(entity);
+            Context.Events.Attach(entity);
+            var entry = Context.Entry(entity);
+            entry.Property(e => e.Title).IsModified = true;
+            entry.Property(e => e.Description).IsModified = true;
+            entry.Property(e => e.Date).IsModified = true;
+            entry.Property(e => e.End).IsModified = true;
+            entry.Property(e => e.Start).IsModified = true;
+            Context.SaveChanges();
         }
 
         public void Remove(Event entity)
