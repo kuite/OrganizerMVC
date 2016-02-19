@@ -129,7 +129,6 @@ namespace OrganizerMVC.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             ClaimsIdentity identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-
             identity.AddClaim(new Claim(ClaimTypes.Sid, user.Id.ToString()));
 
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, identity);
