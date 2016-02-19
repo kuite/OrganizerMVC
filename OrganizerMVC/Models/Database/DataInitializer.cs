@@ -15,8 +15,8 @@ namespace OrganizerMVC.Models.Database
                 Title = "Meczyk",
                 Description = "Friendly game with frinds",
                 Date = "2016-02-16",
-                Start = DateTime.Now.ToString("HH:mm"),
-                End = DateTime.Now.AddHours(3).ToString("HH:mm")
+                Start = "10:30",
+                End = "12:30"
             };
 
             var actv2 = new Event
@@ -24,8 +24,8 @@ namespace OrganizerMVC.Models.Database
                 Title = "Wykład",
                 Description = "twotwtwototw",
                 Date = "2016-02-15",
-                Start = DateTime.Now.ToString("HH:mm"),
-                End = DateTime.Now.AddHours(3).ToString("HH:mm")
+                Start = "9:30",
+                End = "12:30"
             };
 
             var actv3 = new Event
@@ -33,8 +33,8 @@ namespace OrganizerMVC.Models.Database
                 Title = "Meczyk",
                 Description = "threethreether",
                 Date = "2016-02-10",
-                Start = DateTime.Now.ToString("HH:mm"),
-                End = DateTime.Now.AddHours(3).ToString("HH:mm")
+                Start = "10:30",
+                End = "12:30"
             };
 
             var actv4 = new Event
@@ -42,8 +42,8 @@ namespace OrganizerMVC.Models.Database
                 Title = "Meczyk",
                 Description = "5fourfourfourfour",
                 Date = "2016-02-11",
-                Start = DateTime.Now.ToString("HH:mm"),
-                End = DateTime.Now.AddHours(3).ToString("HH:mm")
+                Start = "10:30",
+                End = "21:30"
             };
 
             var actv5 = new Event
@@ -51,8 +51,8 @@ namespace OrganizerMVC.Models.Database
                 Title = "Meczyk",
                 Description = "555fivefiveifve",
                 Date = "2016-02-12",
-                Start = DateTime.Now.ToString("HH:mm"),
-                End = DateTime.Now.AddHours(3).ToString("HH:mm")
+                Start = "12:30",
+                End = "18:30"
             };
 
             if (!context.Users.Any(u => u.UserName == "tester@wp.pl"))

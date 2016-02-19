@@ -13,7 +13,8 @@
             End: $("#end").val()
         },
         error: function (xhr, status, error) {
-            //do something about the error
+            var alertMsg = "Error: " + error;
+            alert(alertMsg);
         },
         success: function (response) {
             var myCalendar = $("#calendar");
@@ -46,8 +47,8 @@ function DeleteUserEvent(id) {
             id: id.data
         },
         error: function (xhr, status, error) {
-            var f = error.message;
-            //do something about the error
+            var alertMsg = "Error: " + error;
+            alert(alertMsg);
         },
         success: function (response) {
             if (response != null) {
@@ -62,7 +63,7 @@ function DeleteUserEvent(id) {
 function UpdateEvent(id) {
     $.ajax({
         type: "POST",
-        url: "Calendar/UpdateEvent",
+        url: "Calendar/UpdateEven",
         dataType: "json",
         data: {
             Id: id.data,
@@ -73,8 +74,8 @@ function UpdateEvent(id) {
             End: $("#endEdit").val()
         },
         error: function (xhr, status, error) {
-            var f = error.message;
-            //do something about the error
+            var alertMsg = "Error: " + error;
+            alert(alertMsg);
         },
         success: function (response) {
             if (response != null) {
@@ -129,8 +130,8 @@ function LoadEvents() {
         url: "Calendar/GetUserEvents",
         dataType: "text",
         error: function (xhr, status, error) {
-            var alertMsg = string.concat("Error: ", error, "Status: ", status);
-            window.alert(alertMsg);
+            var alertMsg = "Error: " + error;
+            alert(alertMsg);
         },
         success: function (response) {
             var formatted = '{ "events" : ' + response;
