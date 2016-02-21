@@ -1,24 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
-using OrganizerMVC.DataAccess;
 using OrganizerMVC.Models;
+using OrganizerMVC.Models.Database;
 using OrganizerMVC.Models.Logic;
+using OrganizerMVC.Services;
 using OrganizerMVC.ViewModels;
+using WebGrease.Css.Extensions;
 
 namespace OrganizerMVC.Controllers
 {
     [Authorize]
     public class CalendarController : BaseController
     {
-        private readonly IRepository<Event, int> _repository;
+        private readonly IEventsService _eventsService;
 
-        public CalendarController(IRepository<Event, int> repository)
+        private readonly UserManager _manager;
+
+        private DataContext _context;
+
+        public CalendarController(DataContext context)
         {
-            _repository = repository;
+            _context = context;
+            _eventsService = new EventsService(context);
+            _manager = new UserManager(new UserStore(context));
         }
 
         public ActionResult Index()
@@ -29,8 +35,7 @@ namespace OrganizerMVC.Controllers
         [HttpPost]
         public string AddEvent(EventViewModel evm)
         {
-            var manager = new UserManager(new UserStore(_repository.CurrentContext));
-            var user = manager.FindById(CurrentUser.UserId);
+            var user = _manager.FindById(CurrentUser.UserId);
 
             var newEvent = new Event
             {
@@ -42,7 +47,7 @@ namespace OrganizerMVC.Controllers
                 End = evm.End
             };
 
-            _repository.Add(newEvent);
+            _eventsService.Add(newEvent);
 
             var evnt = new CalendarEvent
             {
@@ -65,10 +70,10 @@ namespace OrganizerMVC.Controllers
         public string GetUserEvents()
         {
             var id = CurrentUser.UserId;
-            var events = _repository.Get().Where(a => a.User.Id == id);
+            var events = _eventsService.GetEvents(id);
 
             var calEvents = new List<CalendarEvent>();
-            calEvents.AddRange(events.Select(e => new CalendarEvent
+            events.ForEach(e => calEvents.Add(new CalendarEvent
             {
                 title = e.Title,
                 description = e.Description,
@@ -90,11 +95,11 @@ namespace OrganizerMVC.Controllers
         public string DeleteEvent(int id)
         {
             int deletedId;
-            var evt = _repository.Get(id);
+            var evt = _eventsService.Get(id);
 
             if (evt != null)
             {
-                _repository.Remove(evt);
+                _eventsService.Delete(evt.EventId);
                 deletedId = id;
             }
             else
@@ -110,8 +115,7 @@ namespace OrganizerMVC.Controllers
         [HttpPost]
         public string UpdateEvent(EventViewModel evm)
         {
-            var manager = new UserManager(new UserStore(_repository.CurrentContext));
-            var user = manager.FindById(CurrentUser.UserId);
+            var user = _manager.FindById(CurrentUser.UserId);
             var evId = evm.Id;
 
             var evt = new Event
@@ -124,7 +128,7 @@ namespace OrganizerMVC.Controllers
                 Start = evm.Start,
                 End = evm.End
             };
-            _repository.Update(evt);
+            _eventsService.Update(evt);
 
             var json = JsonConvert.SerializeObject(evId);
 

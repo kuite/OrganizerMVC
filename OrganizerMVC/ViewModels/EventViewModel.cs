@@ -5,7 +5,7 @@ namespace OrganizerMVC.ViewModels
     public class EventViewModel
     {
         [Display(Name = "Id")]
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [Display(Name = "Title")]

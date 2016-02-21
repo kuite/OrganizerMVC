@@ -17,9 +17,27 @@ namespace OrganizerMVC.Tests.Controllers
         }
 
         [Test]
-        public void AddTest()
+        public void AddEventTest()
         {
 
+        }
+
+        [Test]
+        public void DeleteEventTest()
+        {
+            
+        }
+
+        [Test]
+        public void UpdateEventTest()
+        {
+
+        }
+
+        [Test]
+        public void GetUserEventsTest()
+        {
+            
         }
     }
 }
