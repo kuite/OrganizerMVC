@@ -12,9 +12,9 @@ namespace OrganizerMVC.Models.Database
             System.Data.Entity.Database.SetInitializer(new DataInitializer());
         }
 
-        public static DataContext Create()
-        {
-            return new DataContext();
-        }
+//        public static DataContext Create()
+//        {
+//            return new DataContext();
+//        }
     }
 }

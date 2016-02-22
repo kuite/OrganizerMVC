@@ -18,11 +18,8 @@ namespace OrganizerMVC.Controllers
 
         private readonly UserManager _manager;
 
-        private DataContext _context;
-
         public CalendarController(DataContext context)
         {
-            _context = context;
             _eventsService = new EventsService(context);
             _manager = new UserManager(new UserStore(context));
         }
