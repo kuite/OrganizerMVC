@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using OrganizerMVC.Models;
 using OrganizerMVC.Models.Database;
@@ -29,13 +30,7 @@ namespace OrganizerMVC.Services
 
         public void Update(Event evt)
         {
-            _context.Events.Attach(evt);
-            var entry = _context.Entry(evt);
-            entry.Property(e => e.Title).IsModified = true;
-            entry.Property(e => e.Description).IsModified = true;
-            entry.Property(e => e.Date).IsModified = true;
-            entry.Property(e => e.End).IsModified = true;
-            entry.Property(e => e.Start).IsModified = true;
+            _context.Set<Event>().AddOrUpdate(evt);
             _context.SaveChanges();
         }
 

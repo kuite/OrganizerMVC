@@ -1,9 +1,4 @@
-﻿using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Moq;
@@ -37,34 +32,23 @@ namespace OrganizerMVC.Tests.Controllers
                 Password = "useruser",
                 RememberMe = false
             };
-
-
-            _manager = new UserManager(new UserStore(new DataContext()));
+            var context = new DataContext();
+            _manager = new UserManager(new UserStore(context));
             _controller = new AccountController(_manager);
 
             var user = await _manager.FindAsync(_userViewModel.Email, _userViewModel.Password);
-            var identity = await _manager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-            identity.AddClaim(new Claim(ClaimTypes.Sid, user.Id.ToString()));
-
-            var cp = Mock.Of<System.Security.Claims.ClaimsPrincipal>();
-//            c.aClaim(It.IsAny<string>(), It.IsAny<string>()).Returns(true);
-            cp.AddIdentity(identity);
-
-            var httpContext = new Mock<HttpContextBase>();
-            httpContext.Setup(x => x.User).Returns(cp);
-            var reqContext = new RequestContext(httpContext.Object, new RouteData());
-
-            _controller.ControllerContext = new ControllerContext(reqContext, _controller);
+            if (user == null)
+            {
+                await _manager.CreateAsync(new User { Email = _userViewModel.Email, UserName = _userViewModel.Email }, _userViewModel.Password);
+            }
+            var mockCp = new Mock<IClaimsPrincipal>();
+            if (user != null) mockCp.SetupGet(cp => cp.UserId).Returns(user.Id);
+            _controller.CurrentUser = mockCp.Object;
 
             var mockAuthenticationManager = new Mock<IAuthenticationManager>();
             mockAuthenticationManager.Setup(am => am.SignOut());
             mockAuthenticationManager.Setup(am => am.SignIn());
             _controller.AuthenticationManager = mockAuthenticationManager.Object;
-
-            if (_manager.FindByEmail("test@wp.pl") == null)
-            {
-                await _manager.CreateAsync(new User { Email = _userViewModel.Email, UserName = _userViewModel.Email }, _userViewModel.Password);
-            }
         }
 
         [Test]
@@ -73,7 +57,7 @@ namespace OrganizerMVC.Tests.Controllers
             var result = await _controller.Login(_userViewModel, "home/index");
             Assert.IsNotNull(result);
 
-            var loggedUser = _manager.FindByEmail("test@wp.pl");
+            var loggedUser = _manager.FindByEmail(_userViewModel.Email);
             Assert.IsNotNull(loggedUser);
         }
 

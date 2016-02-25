@@ -2,12 +2,15 @@
 
 namespace OrganizerMVC.Models
 {
-//    public interface IClaimsPrincipal
-//    {
-//    }
-
-    public class ClaimsPrincipal : System.Security.Claims.ClaimsPrincipal//, IClaimsPrincipal
+    public interface IClaimsPrincipal
     {
+        int UserId { get; }
+    }
+
+    public class ClaimsPrincipal : System.Security.Claims.ClaimsPrincipal, IClaimsPrincipal
+    {
+        private int _userId;
+
         public ClaimsPrincipal(System.Security.Claims.ClaimsPrincipal principal) : base(principal)
         {
             
@@ -15,7 +18,15 @@ namespace OrganizerMVC.Models
 
         public int UserId
         {
-            get { return int.Parse(FindFirst( ClaimTypes.Sid ).Value); }
+            get
+            {
+                if (_userId == 0)
+                {
+                    _userId = int.Parse(FindFirst(ClaimTypes.Sid).Value);
+                }
+                return _userId;
+            }
+//            set { _userId = value; }
         }
     }
 }

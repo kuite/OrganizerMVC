@@ -21,7 +21,11 @@ namespace OrganizerMVC.Controllers
         {
             get
             {
-                return _authenticationManager ?? Request.GetOwinContext().Authentication;
+                if (_authenticationManager == null)
+                {
+                    _authenticationManager = Request.GetOwinContext().Authentication;
+                }
+                return _authenticationManager;
             }
             set
             {

@@ -7,10 +7,15 @@ namespace OrganizerMVC.Controllers
 {
     public abstract class BaseController : Controller
     {
-        public ClaimsPrincipal CurrentUser
+        private IClaimsPrincipal _currentUser;
+
+        public IClaimsPrincipal CurrentUser
         {
-            get { return new ClaimsPrincipal((System.Security.Claims.ClaimsPrincipal)this.User); }
-            set { CurrentUser = value; }
+            get {
+                return _currentUser ??
+                       (_currentUser = new ClaimsPrincipal((System.Security.Claims.ClaimsPrincipal) this.User));
+            }
+            set { _currentUser = value; }
         }
 
         public BaseController()

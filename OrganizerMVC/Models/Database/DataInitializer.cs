@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Microsoft.AspNet.Identity;
@@ -8,6 +7,11 @@ namespace OrganizerMVC.Models.Database
 {
     public class DataInitializer : DropCreateDatabaseIfModelChanges<DataContext>
     {
+        public void PublicSeed(DataContext context)
+        {
+            Seed(context);
+        }
+
         protected override void Seed(DataContext context)
         {
             var actv1 = new Event
