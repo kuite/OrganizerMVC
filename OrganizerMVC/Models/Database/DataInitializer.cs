@@ -12,7 +12,7 @@ namespace OrganizerMVC.Models.Database
         {
             var actv1 = new Event
             {
-                Title = "Meczyk",
+                Title = "Turniej",
                 Description = "Friendly game with frinds",
                 Date = "2016-02-16",
                 Start = "10:30",
@@ -39,7 +39,7 @@ namespace OrganizerMVC.Models.Database
 
             var actv4 = new Event
             {
-                Title = "Meczyk",
+                Title = "Event",
                 Description = "5fourfourfourfour",
                 Date = "2016-02-11",
                 Start = "10:30",
@@ -48,26 +48,26 @@ namespace OrganizerMVC.Models.Database
 
             var actv5 = new Event
             {
-                Title = "Meczyk",
+                Title = "Tytul",
                 Description = "555fivefiveifve",
                 Date = "2016-02-12",
                 Start = "12:30",
                 End = "18:30"
             };
 
-            if (!context.Users.Any(u => u.UserName == "tester@wp.pl"))
+            if (!context.Users.Any(u => u.UserName == "user@wp.pl"))
             {
                 var userStore = new UserStore(context);
                 var userManager = new UserManager(userStore);
 
                 var userToInsert = new User
                 {
-                    UserName = "tester@wp.pl",
-                    Email = "tester@wp.pl",
+                    UserName = "user@wp.pl",
+                    Email = "user@wp.pl",
                     PhoneNumber = "0797697898",
                     Activities = new List<Event> { actv1, actv2, actv3, actv4, actv5 }
                 };
-                userManager.Create(userToInsert, "tester");
+                userManager.Create(userToInsert, "useruser");
 
                 actv1.User = userToInsert;
                 actv2.User = userToInsert;

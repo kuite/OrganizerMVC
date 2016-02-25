@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using OrganizerMVC.Models;
 using OrganizerMVC.Models.Database;
@@ -17,6 +19,20 @@ namespace OrganizerMVC.Controllers
         private readonly IEventsService _eventsService;
 
         private readonly UserManager _manager;
+
+        private IAuthenticationManager _authenticationManager;
+
+        public IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return _authenticationManager ?? Request.GetOwinContext().Authentication;
+            }
+            set
+            {
+                _authenticationManager = value;
+            }
+        }
 
         public CalendarController(DataContext context)
         {
@@ -67,7 +83,7 @@ namespace OrganizerMVC.Controllers
         public string GetUserEvents()
         {
             var id = CurrentUser.UserId;
-            var events = _eventsService.GetEvents(id);
+            var events = _eventsService.GetUserEvents(id);
 
             var calEvents = new List<CalendarEvent>();
             events.ForEach(e => calEvents.Add(new CalendarEvent

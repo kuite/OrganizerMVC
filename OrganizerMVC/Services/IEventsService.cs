@@ -9,6 +9,6 @@ namespace OrganizerMVC.Services
         void Delete(int id);
         void Update(Event evt);
         Event Get(int id);
-        IEnumerable<Event> GetEvents(int userId);
+        IEnumerable<Event> GetUserEvents(int userId);
     }
 }

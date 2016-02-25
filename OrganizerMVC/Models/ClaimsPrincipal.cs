@@ -2,7 +2,11 @@
 
 namespace OrganizerMVC.Models
 {
-    public class ClaimsPrincipal : System.Security.Claims.ClaimsPrincipal
+//    public interface IClaimsPrincipal
+//    {
+//    }
+
+    public class ClaimsPrincipal : System.Security.Claims.ClaimsPrincipal//, IClaimsPrincipal
     {
         public ClaimsPrincipal(System.Security.Claims.ClaimsPrincipal principal) : base(principal)
         {

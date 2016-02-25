@@ -63,7 +63,7 @@ function DeleteUserEvent(id) {
 function UpdateEvent(id) {
     $.ajax({
         type: "POST",
-        url: "Calendar/UpdateEven",
+        url: "Calendar/UpdateEvent",
         dataType: "json",
         data: {
             Id: id.data,

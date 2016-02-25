@@ -10,6 +10,7 @@ namespace OrganizerMVC.Controllers
         public ClaimsPrincipal CurrentUser
         {
             get { return new ClaimsPrincipal((System.Security.Claims.ClaimsPrincipal)this.User); }
+            set { CurrentUser = value; }
         }
 
         public BaseController()
