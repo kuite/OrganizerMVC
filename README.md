@@ -5,3 +5,4 @@ todo:
 -integration tests
 -remind password to mail
 -drag events from day to day
+-add images to event
